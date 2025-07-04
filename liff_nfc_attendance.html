@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LINE NFC 打卡</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .success {
+      font-size: 20px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h2>LINE NFC 打卡系統</h2>
+  <div id="status">載入中...</div>
+
+  <script>
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbz7uaOLQ5Bj9nxmiNGMalERqLgTikqioWDRppDeUkYgBIjcrlc8AdXv7413D4mEBs6pOw/exec";
+
+    async function main() {
+      await liff.init({ liffId: "2007693242-exKRJ206" });
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+      const profile = await liff.getProfile();
+      const uid = profile.userId;
+      const name = profile.displayName;
+      const loc = new URL(window.location.href).searchParams.get("loc") || "未知地點";
+
+      const url = `${scriptUrl}?name=${encodeURIComponent(name)}&uid=${encodeURIComponent(uid)}&loc=${encodeURIComponent(loc)}`;
+      try {
+        const res = await fetch(url);
+        const msg = await res.text();
+        document.getElementById("status").innerHTML = `✅ ${msg}<br><br>你好 ${name}<br>地點：${loc}`;
+      } catch (e) {
+        document.getElementById("status").innerText = "— 錯誤，無法打卡 —";
+      }
+    }
+
+    main();
+  </script>
+</body>
+</html>
