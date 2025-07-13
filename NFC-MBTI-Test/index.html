@@ -57,7 +57,7 @@
     if (!uid) {
       result.innerHTML = `<p class="error">❌ 缺少 UID 參數</p>`;
     } else {
-      fetch(`https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbyuMSrIsBC2Zw7aGm_0XHKKh0GHcCPH0J8IKFi39o5TTJOTDKv6mXCYsfZXdBhYi5Tn/exec?uid=${uid}`)
+      fetch(`https://script.google.com/macros/s/AKfycbynt5bzddkY_qr2tMxI4RoOloRWc1bU1UgxStG9fHkWqguGd8oiA9CEBt_mPLYGlG5J/exec?uid=${uid}`)
         .then(res => res.text())
         .then(html => {
           result.innerHTML = html;
