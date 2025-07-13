@@ -3,51 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MBTI 測驗驗證中</title>
+  <title>MBTI 測驗入口驗證</title>
   <style>
     body {
-      font-family: "Helvetica Neue", sans-serif;
-      background: #f9f9f9;
-      text-align: center;
+      font-family: sans-serif;
       padding: 60px 20px;
+      text-align: center;
+      background: #f2f2f2;
     }
-    .container {
-      max-width: 480px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    h1 {
+      color: #333;
     }
-    .logo {
-      max-width: 180px;
-      margin-bottom: 20px;
-    }
-    .btn {
-      display: inline-block;
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px 20px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 16px;
-      margin-top: 20px;
-    }
-    .btn:hover {
-      background-color: #45a049;
+    .loading {
+      font-size: 18px;
+      margin-top: 40px;
     }
     .error {
       color: red;
-      font-weight: bold;
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="result">
-    <img class="logo" src="https://ezcard-revtel2-com-prod.s3.ap-northeast-1.amazonaws.com/2025-07/2025-07-13_002005_N2G_logo_WL_A320-1752399133.png" alt="NFCTOGO LOGO" />
-    <h2>MBTI 測驗驗證中⋯</h2>
-    <p>請稍候⋯</p>
-  </div>
+  <h1>MBTI 測驗驗證中⋯⋯</h1>
+  <div id="result" class="loading">請稍候...</div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
@@ -58,15 +37,17 @@
       result.innerHTML = `<p class="error">❌ 缺少 UID 參數</p>`;
     } else {
       fetch(`https://script.google.com/macros/s/AKfycbwqPTa_WWQguk4fwprzeYaRTGj1-XuhEuPDBaeEQyOivX2WvVX8dFZJOR2Wc4SwWIfH/exec?uid=${uid}`)
-        .then(res => res.text())
-        .then(html => {
-          document.open();
-          document.write(html);
-          document.close();
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            window.location.href = 'form.html?token=' + data.token;
+          } else {
+            result.innerHTML = `<p class="error">❌ ${data.message}</p>`;
+          }
         })
         .catch(err => {
+          console.error(err);
           result.innerHTML = `<p class="error">❌ 驗證失敗，請稍後再試</p>`;
-          console.error("驗證錯誤：", err);
         });
     }
   </script>
