@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -6,86 +7,73 @@
   <title>MBTI 測驗入口</title>
   <style>
     body {
-      font-family: "Microsoft JhengHei", sans-serif;
-      background-color: #f2f2f2;
+      font-family: sans-serif;
+      background: #f6f6f6;
+      padding: 40px;
       text-align: center;
-      padding: 50px 20px;
     }
     .container {
-      max-width: 500px;
-      margin: auto;
-      background: #fff;
+      background: white;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    h2 {
-      color: #333;
-    }
-    .message {
-      font-size: 1.1em;
-      margin: 20px 0;
+    .logo {
+      width: 160px;
+      margin-bottom: 20px;
     }
     .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 24px;
+      display: block;
+      margin: 10px auto;
+      padding: 12px 20px;
       font-size: 16px;
       background-color: #4CAF50;
       color: white;
-      border: none;
-      border-radius: 8px;
       text-decoration: none;
-      cursor: pointer;
+      border-radius: 8px;
     }
-    .btn:disabled {
-      background-color: #aaa;
-    }
-    .logo {
-      width: 150px;
-      margin-bottom: 20px;
+    .btn:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <img class="logo" src="https://ezcard-revtel2-com-prod.s3.ap-northeast-1.amazonaws.com/2025-07/2025-07-13_002005_N2G_logo_WL_A320-1752399133.png" alt="NFCTOGO Logo">
-    <h2>MBTI 測驗入口</h2>
-    <div class="message" id="message">正在驗證中...</div>
-    <a id="startBtn" class="btn" href="#" style="display:none;">開始測驗</a>
+    <img class="logo" src="https://ezcard-revtel2-com-prod.s3.ap-northeast-1.amazonaws.com/2025-07/2025-07-13_002005_N2G_logo_WL_A320-1752399133.png" alt="Logo" />
+    <div id="content">
+      <p>驗證中，請稍候...</p>
+    </div>
   </div>
-
   <script>
     async function verifyToken() {
       const params = new URLSearchParams(window.location.search);
       const token = params.get("token");
-
-      const messageEl = document.getElementById("message");
-      const startBtn = document.getElementById("startBtn");
-
       if (!token) {
-        messageEl.textContent = "❌ 無效的連結（缺少 token）";
+        document.getElementById("content").innerHTML = "<p>❌ 缺少 Token 參數</p>";
         return;
       }
 
       try {
-        const res = await fetch(`https://script.google.com/macros/s/AKfycbzlyoCT7MPeY1n8uvY149pxYQL67q05px4KM3JuPwqrLUXEzqe5znzobuwgq7-xzMxv/exec?token=${token}`);
-        const text = await res.text();
-
-        if (text.startsWith("✅")) {
-          messageEl.textContent = "✅ 驗證成功，請點擊下方按鈕開始測驗";
-          startBtn.href = `form.html?token=${token}`;
-          startBtn.style.display = "inline-block";
-        } else {
-          messageEl.textContent = text;
-        }
+        const response = await fetch(
+          "https://script.google.com/macros/s/AKfycbzlyoCT7MPeY1n8uvY149pxYQL67q05px4KM3JuPwqrLUXEzqe5znzobuwgq7-xzMxv/exec",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "token=" + encodeURIComponent(token),
+          }
+        );
+        const html = await response.text();
+        document.getElementById("content").innerHTML = html;
       } catch (err) {
-        messageEl.textContent = "❌ 連線錯誤，請稍後再試";
-        console.error(err);
+        document.getElementById("content").innerHTML = "<p>❌ 發生錯誤</p>";
       }
     }
-
     verifyToken();
   </script>
 </body>
 </html>
+
