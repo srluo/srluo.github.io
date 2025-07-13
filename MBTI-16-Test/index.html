@@ -1,67 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <title>MBTI 雙版本問卷入口</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MBTI 測驗入口</title>
   <style>
-    body {
-      font-family: "Helvetica Neue", sans-serif;
-      background-color: #f4f4f4;
-      text-align: center;
-      padding: 2rem;
-    }
-    .logo {
-      margin-bottom: 2rem;
-    }
-    .card {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
-      max-width: 480px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
+    body { font-family: sans-serif; text-align: center; padding-top: 100px; }
     .btn {
-      display: block;
-      background: #4a90e2;
+      padding: 12px 24px;
+      background-color: #4CAF50;
       color: white;
-      padding: 1rem;
-      margin: 1rem 0;
-      border-radius: 12px;
       text-decoration: none;
-      font-size: 1.2rem;
-      transition: background 0.2s ease;
-    }
-    .btn:hover {
-      background: #357ab8;
-    }
-    .footer {
-      margin-top: 2rem;
-      color: #888;
-      font-size: 0.9rem;
+      border-radius: 6px;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
+  <h2 id="status">驗證中...</h2>
+  <div id="action"></div>
 
-  <div class="logo">
-    <img src="logo.png" alt="NFCTOGO Logo" width="200">
-  </div>
+  <script>
+    const token = new URLSearchParams(window.location.search).get('token');
+    const statusEl = document.getElementById('status');
+    const actionEl = document.getElementById('action');
 
-  <div class="card">
-    <h1>請選擇您要填寫的 MBTI 問卷版本</h1>
-    <a href="https://docs.google.com/forms/d/1x8Fqjfp5n6GM9wE9DrAb3O_xCCY6SSN_0Rdqs86x2F4/viewform" class="btn">完整版問卷（48 題）</a>
-    <a href="https://docs.google.com/forms/d/1k88bRjF8TTNVoURcKmO0d2lYle8knMz_35RFMFRi2Uw/viewform" class="btn">精簡版問卷（24 題）</a>
-  </div>
+    if (!token) {
+      statusEl.textContent = '❌ 無效的網址，缺少 token。';
+    } else {
+      // 替換成你的 Apps Script Web App URL
+      const VERIFY_URL = `https://script.google.com/macros/s/AKfycbz6c0voQpo0E3I-nlaJvMuKgsHqDCcd70OqT7aSWll5hoivTihVIAvY3_qG3bC7JAFY/exec?verifyToken=${token}`;
 
-  <div class="footer">
-    Powered by NFCTOGO × Google Forms
-  </div>
-
+      fetch(VERIFY_URL)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            statusEl.textContent = `✅ 驗證成功，歡迎開始測驗`;
+            actionEl.innerHTML = `<a class="btn" href="form.html?token=${token}">開始測驗</a>`;
+          } else {
+            statusEl.textContent = `❌ 驗證失敗：${data.message}`;
+          }
+        })
+        .catch(() => {
+          statusEl.textContent = '❌ 系統錯誤，請稍後再試。';
+        });
+    }
+  </script>
 </body>
 </html>
