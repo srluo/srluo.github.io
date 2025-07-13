@@ -58,15 +58,13 @@
       result.innerHTML = `<p class="error">❌ 缺少 UID 參數</p>`;
     } else {
       fetch(`https://script.google.com/macros/s/AKfycbwqPTa_WWQguk4fwprzeYaRTGj1-XuhEuPDBaeEQyOivX2WvVX8dFZJOR2Wc4SwWIfH/exec?uid=${uid}`)
-        .then(res => res.text())
-        .then(html => {
-          // 用整頁替換的方式
-          document.open();
-          document.write(html);
-          document.close();
-        })
-        .catch(err => {
-          result.innerHTML = `<p class="error">❌ 驗證失敗，請稍後再試</p>`;
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'ok') {
+            window.location.href = data.redirectUrl;
+          } else {
+            result.innerHTML = `<p class="error">${data.message}</p>`;
+          }
         });
     }
   </script>
