@@ -57,7 +57,7 @@
     if (!token) {
       result.innerHTML = '<p class="error">❌ 缺少 token 參數</p>';
     } else {
-      fetch("https://script.google.com/macros/s/AKfycbzlyoCT7MPeY1n8uvY149pxYQL67q05px4KM3JuPwqrLUXEzqe5znzobuwgq7-xzMxv/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbyHgbpQqSdnOBpyyJouQM_F4D4xw3fwjo4sqpr34cz3qMfRCPjioZSCxCyVgpiWwwcl/exec", {
         method: "POST",
         body: new URLSearchParams({ token: token })
       })
