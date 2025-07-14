@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>諸葛神算 NFC 抽籤 DEMO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: "Noto Sans TC", sans-serif; background: #f9f4ea; color: #333; padding: 2em; max-width: 600px; margin: auto; }
+    h1 { text-align: center; color: #8B0000; }
+    .card { background: #fff; padding: 1.5em; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-top: 1em; }
+    .label { font-weight: bold; margin-top: 1em; }
+  </style>
+</head>
+<body>
+  <h1>🔮 諸葛神算 NFC 抽籤 DEMO</h1>
+  <div class="card" id="fortuneCard">
+    <div><span class="label">使用者 UID：</span><span id="uidDisplay"></span></div>
+    <div><span class="label">剩餘點數：</span><span id="pointsDisplay"></span></div>
+    <div><span class="label">你今日抽中的是：</span>第 <span id="lotNumber"></span> 籤</div>
+    <div><span class="label">籤詩：</span>
+      <div id="poemText"></div>
+    </div>
+    <div><span class="label">解籤：</span>
+      <div id="explanation"></div>
+    </div>
+  </div>
+
+  <script>
+    const poems = [
+      { id: 1, poem: "天門一掛榜，預定奪標人。馬嘶芳草地，秋高聽鹿鳴。", explanation: "時運亨通，適合開展事業，有貴人相助。" },
+      { id: 2, poem: "黃金失色，本性難移。事多虛假，不若安閒。", explanation: "當前情勢不穩，建議暫避風頭，保持現狀。" },
+      { id: 3, poem: "一朝無事忽遭官，卻是飛來禍不干。", explanation: "小心無妄之災，謹言慎行，勿涉人事是非。" },
+      { id: 4, poem: "冬去春來，萬象更新。大展鴻圖，自得人欽。", explanation: "新機會已到，凡事順利，貴人提攜。" }
+    ];
+
+    const uid = new URLSearchParams(window.location.search).get('uid') || '未知';
+    const storageKey = "points_" + uid;
+    let points = parseInt(localStorage.getItem(storageKey)) || 5;
+
+    function drawLot() {
+      if (points <= 0) {
+        document.getElementById("poemText").innerText = "點數不足，無法抽籤。";
+        document.getElementById("explanation").innerText = "請儲值後再試一次。";
+        return;
+      }
+      const lot = Math.floor(Math.random() * poems.length);
+      const selected = poems[lot];
+      points -= 1;
+      localStorage.setItem(storageKey, points);
+
+      document.getElementById("lotNumber").innerText = selected.id;
+      document.getElementById("poemText").innerText = selected.poem;
+      document.getElementById("explanation").innerText = selected.explanation;
+    }
+
+    document.getElementById("uidDisplay").innerText = uid;
+    document.getElementById("pointsDisplay").innerText = points;
+    drawLot();
+  </script>
+</body>
+</html>
