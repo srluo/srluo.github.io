@@ -1,58 +1,65 @@
 
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>諸葛神算 NFC 抽籤 DEMO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>諸葛神算抽籤</title>
   <style>
-    body { font-family: "Noto Sans TC", sans-serif; background: #f9f4ea; color: #333; padding: 2em; max-width: 600px; margin: auto; }
-    h1 { text-align: center; color: #8B0000; }
-    .card { background: #fff; padding: 1.5em; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-top: 1em; }
-    .label { font-weight: bold; margin-top: 1em; }
+    body { font-family: sans-serif; padding: 2em; text-align: center; }
+    button { padding: 1em 2em; font-size: 18px; margin-top: 1em; }
+    #result { white-space: pre-wrap; margin-top: 2em; font-size: 18px; }
   </style>
 </head>
 <body>
-  <h1>🔮 諸葛神算 NFC 抽籤 DEMO</h1>
-  <div class="card" id="fortuneCard">
-    <div><span class="label">使用者 UID：</span><span id="uidDisplay"></span></div>
-    <div><span class="label">剩餘點數：</span><span id="pointsDisplay"></span></div>
-    <div><span class="label">你今日抽中的是：</span>第 <span id="lotNumber"></span> 籤</div>
-    <div><span class="label">籤詩：</span>
-      <div id="poemText"></div>
-    </div>
-    <div><span class="label">解籤：</span>
-      <div id="explanation"></div>
-    </div>
-  </div>
+  <h1>📜 諸葛神算抽籤</h1>
+  <div id="status">載入中...</div>
+  <button id="drawBtn" onclick="drawFortune()" style="display:none;">🔮 抽一支籤</button>
+  <pre id="result"></pre>
 
   <script>
-    const uid = new URLSearchParams(window.location.search).get('uid') || '未知';
-    const storageKey = "points_" + uid;
-    let points = parseInt(localStorage.getItem(storageKey)) || 5;
+    const apiURL = "https://script.google.com/macros/s/AKfycbzj96f0BMAJuLeVpatqKlsh3HYcdvNq9RXNOicbVfayif22Y_lkRH3AfoeLoaai0Ut1Sg/exec";
+    let fortunes = [];
 
-    document.getElementById("uidDisplay").innerText = uid;
-    document.getElementById("pointsDisplay").innerText = points;
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
 
-    fetch("fortune_384.json")
-      .then(res => res.json())
-      .then(poems => {
-        if (points <= 0) {
-          document.getElementById("poemText").innerText = "點數不足，無法抽籤。";
-          document.getElementById("explanation").innerText = "請儲值後再試一次。";
-          return;
+    async function verifyUID(uid) {
+      try {
+        const res = await fetch(`${apiURL}?uid=${uid}&action=use`);
+        const data = await res.json();
+        if (data.points >= 0) {
+          document.getElementById("status").innerText = `✅ 驗證成功，剩餘點數：${data.points}`;
+          document.getElementById("drawBtn").style.display = "inline-block";
+        } else {
+          document.getElementById("status").innerText = "❌ 點數不足，無法抽籤";
         }
+      } catch (err) {
+        document.getElementById("status").innerText = "❌ 無法驗證 UID，請稍後再試";
+      }
+    }
 
-        const lot = Math.floor(Math.random() * poems.length);
-        const selected = poems[lot];
-        points -= 1;
-        localStorage.setItem(storageKey, points);
+    async function loadFortunes() {
+      const res = await fetch("fortune_384.json");
+      fortunes = await res.json();
+    }
 
-        document.getElementById("lotNumber").innerText = selected.id;
-        document.getElementById("poemText").innerText = selected.poem;
-        document.getElementById("explanation").innerText = selected.explanation;
-        document.getElementById("pointsDisplay").innerText = points;
-      });
+    function drawFortune() {
+      const pick = fortunes[Math.floor(Math.random() * fortunes.length)];
+      document.getElementById("result").textContent = `第 ${pick.id} 籤\n\n${pick.poem}\n\n${pick.explanation}`;
+    }
+
+    // 主流程
+    (async () => {
+      const uid = getQueryParam("uid");
+      if (!uid) {
+        document.getElementById("status").innerText = "❌ 缺少 UID，請用 LINE 掃 NFC 進入";
+        return;
+      }
+      await loadFortunes();
+      await verifyUID(uid);
+    })();
   </script>
 </body>
 </html>
