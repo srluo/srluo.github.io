@@ -1,54 +1,42 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MBTI 測驗入口驗證</title>
+  <meta charset="UTF-8">
+  <title>MBTI 測驗入口</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 60px 20px;
-      text-align: center;
-      background: #f2f2f2;
-    }
-    h1 {
-      color: #333;
-    }
-    .loading {
+    body { font-family: sans-serif; text-align: center; padding-top: 60px; }
+    .btn {
+      display: inline-block;
+      margin: 10px;
+      padding: 14px 28px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
       font-size: 18px;
-      margin-top: 40px;
     }
-    .error {
-      color: red;
-      margin-top: 30px;
-    }
+    .error { color: red; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h1>MBTI 測驗驗證中⋯⋯</h1>
-  <div id="result" class="loading">請稍候...</div>
-
+  <div id="result">
+    <p>🔄 驗證中，請稍候…</p>
+  </div>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const uid = params.get('uid');
+    const token = params.get('token');
     const result = document.getElementById('result');
 
-    if (!uid) {
-      result.innerHTML = `<p class="error">❌ 缺少 UID 參數</p>`;
+    if (!token) {
+      result.innerHTML = `<p class="error">❌ 缺少 token 參數</p>`;
     } else {
-      fetch(`https://script.google.com/macros/s/AKfycbwqPTa_WWQguk4fwprzeYaRTGj1-XuhEuPDBaeEQyOivX2WvVX8dFZJOR2Wc4SwWIfH/exec?uid=${uid}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success') {
-            window.location.href = 'form.html?token=' + data.token;
-          } else {
-            result.innerHTML = `<p class="error">❌ ${data.message}</p>`;
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          result.innerHTML = `<p class="error">❌ 驗證失敗，請稍後再試</p>`;
-        });
+      result.innerHTML = `
+        <h2>🎯 選擇您的 MBTI 測驗版本</h2>
+        <p>系統已驗證您的授權，請選擇下列測驗版本：</p>
+        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSerzroOj4roQTnfrEHcP3uXRRsGoJW7MtRmu63f6_fHv5HD4w/viewform?usp=pp_url&entry.1056920539=${token}" target="_blank">精簡版測驗（24 題）</a>
+        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSftlhABBIQUdhePPs35vgKljRmWpTBFLl9OG1DGPxCjR3hytA/viewform?usp=pp_url&entry.889409832=${token}" target="_blank">完整版測驗（48 題）</a>
+      `;
     }
   </script>
 </body>
