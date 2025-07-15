@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +33,11 @@
         const data = await res.json();
         if (data.points >= 0) {
           document.getElementById("status").innerText = `✅ 驗證成功，剩餘點數：${data.points}`;
-          document.getElementById("drawBtn").style.display = "inline-block";
+          if (fortunes.length > 0) {
+            document.getElementById("drawBtn").style.display = "inline-block";
+          } else {
+            document.getElementById("status").innerText += "\n⚠️ 籤詩資料尚未載入，請稍後再試";
+          }
         } else {
           document.getElementById("status").innerText = "❌ 點數不足，無法抽籤";
         }
@@ -42,11 +47,19 @@
     }
 
     async function loadFortunes() {
-      const res = await fetch("fortune_384.json");
-      fortunes = await res.json();
+      try {
+        const res = await fetch("fortune_384.json");
+        fortunes = await res.json();
+      } catch (e) {
+        document.getElementById("status").innerText = "⚠️ 無法載入籤詩資料";
+      }
     }
 
     function drawFortune() {
+      if (fortunes.length === 0) {
+        document.getElementById("status").innerText = "⚠️ 籤詩資料尚未載入";
+        return;
+      }
       const pick = fortunes[Math.floor(Math.random() * fortunes.length)];
       document.getElementById("result").textContent = `第 ${pick.id} 籤\n\n${pick.poem}\n\n${pick.explanation}`;
       document.getElementById("drawBtn").style.display = "none";
@@ -55,12 +68,12 @@
 
     // 主流程
     (async () => {
+      await loadFortunes();
       const uid = getQueryParam("uid");
       if (!uid) {
         document.getElementById("status").innerText = "❌ 缺少 UID，請用 LINE 掃 NFC 進入";
         return;
       }
-      await loadFortunes();
       await verifyUID(uid);
     })();
   </script>
