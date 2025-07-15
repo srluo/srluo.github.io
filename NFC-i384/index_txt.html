@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>諸葛神算抽籤</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 480px; margin: auto; }
+    #result { margin-top: 20px; font-size: 18px; }
+    button { padding: 10px 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h2>🔮 諸葛神算抽籤</h2>
+  <div id="info">正在驗證 Token...</div>
+  <div id="result"></div>
+  <script>
+    const apiURL = "https://script.google.com/macros/s/AKfycbwo8AF6T9nxtA0DDNkrP-oSNfr8b2EUvfDntsztEDFGpmg7NAMO5UtzXR095iC96y92ng/exec";
+    const params = new URLSearchParams(window.location.search);
+    const uuid = params.get("uuid") || "";
+    const uid = uuid.substring(0, 14);
+    const token = uuid.substring(16);
+
+    if (!uuid || uuid.length < 32) {
+      document.getElementById("info").innerText = "❌ 格式錯誤，請使用有效連結";
+    } else {
+      fetch(`${apiURL}?action=use_token&uid=${uid}&token=${token}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            document.getElementById("info").innerText = "❌ " + data.message;
+          } else {
+            document.getElementById("info").innerText = `✅ 已扣 1 點（UID: ${uid}）`;
+            document.getElementById("result").innerHTML = `
+              <h3>第 ${data.id} 籤</h3>
+              <p><strong>籤詩：</strong><br>${data.poem.replaceAll("\n", "<br>")}</p>
+              <p><strong>解籤參考：</strong><br>${data.explanation.replaceAll("\n", "<br>")}</p>
+            `;
+          }
+        }).catch(err => {
+          document.getElementById("info").innerText = "❌ 抽籤失敗：" + err;
+        });
+    }
+  </script>
+</body>
+</html>
