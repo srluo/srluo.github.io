@@ -58,7 +58,7 @@
             statusDiv.innerHTML = `<p class="error">❌ ${data.message}</p>`;
           } else {
             document.querySelector("h2").innerText = "✅ 驗證成功！";
-            statusDiv.innerHTML = `<p class="success">UID：${uid}｜已扣 1 點</p>`;
+            statusDiv.innerHTML = `<p class="success">UID：${uid}｜已扣 1 點<br>剩餘點數：${remainingPoints}</p>`;
             document.getElementById("link24").href = form24 + token;
             document.getElementById("link48").href = form48 + token;
             document.getElementById("options").style.display = "block";
