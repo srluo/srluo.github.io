@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: sans-serif; padding: 20px; max-width: 480px; margin: auto; }
-    #result { margin-top: 20px; }
-    button { padding: 10px 20px; font-size: 16px; }
+    #result { margin-top: 20px; font-size: 18px; }
+    button { padding: 10px 20px; font-size: 18px; }
   </style>
 </head>
 <body>
@@ -15,7 +15,7 @@
   <div id="info">正在驗證 Token...</div>
   <div id="result"></div>
   <script>
-    const apiURL = "https://script.google.com/macros/s/AKfycbzj96f0BMAJuLeVpatqKlsh3HYcdvNq9RXNOicbVfayif22Y_lkRH3AfoeLoaai0Ut1Sg/exec";
+    const apiURL = "https://script.google.com/macros/s/AKfycbwo8AF6T9nxtA0DDNkrP-oSNfr8b2EUvfDntsztEDFGpmg7NAMO5UtzXR095iC96y92ng/exec";
     const params = new URLSearchParams(window.location.search);
     const uuid = params.get("uuid") || "";
     const uid = uuid.substring(0, 14);
