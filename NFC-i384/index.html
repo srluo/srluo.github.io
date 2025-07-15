@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +7,7 @@
     body { font-family: sans-serif; padding: 2em; text-align: center; }
     button { padding: 1em 2em; font-size: 18px; margin-top: 1em; }
     #result { white-space: pre-wrap; margin-top: 2em; font-size: 18px; }
+    #hint { color: #555; margin-top: 1em; }
   </style>
 </head>
 <body>
@@ -15,6 +15,7 @@
   <div id="status">載入中...</div>
   <button id="drawBtn" onclick="drawFortune()" style="display:none;">🔮 抽一支籤</button>
   <pre id="result"></pre>
+  <div id="hint"></div>
 
   <script>
     const apiURL = "https://script.google.com/macros/s/AKfycbzj96f0BMAJuLeVpatqKlsh3HYcdvNq9RXNOicbVfayif22Y_lkRH3AfoeLoaai0Ut1Sg/exec";
@@ -48,6 +49,8 @@
     function drawFortune() {
       const pick = fortunes[Math.floor(Math.random() * fortunes.length)];
       document.getElementById("result").textContent = `第 ${pick.id} 籤\n\n${pick.poem}\n\n${pick.explanation}`;
+      document.getElementById("drawBtn").style.display = "none";
+      document.getElementById("hint").textContent = "🙏 請重新刷 NFC 卡以再次抽籤";
     }
 
     // 主流程
