@@ -16,7 +16,7 @@
   <div id="result"></div>
 
   <script>
-    const apiURL = "https://script.google.com/macros/s/AKfycbwo8AF6T9nxtA0DDNkrP-oSNfr8b2EUvfDntsztEDFGpmg7NAMO5UtzXR095iC96y92ng/exec";
+    const apiURL = "https://script.google.com/macros/s/AKfycbwm7yWauhwP-xyD0hN-481MW9AV9FBbTz_NiyvDWJj4cEIfNxBCr7e4lUy1lqk5bZxuKA/exec";
     const imageJSON = "https://srluo.github.io/NFC-i384/fortune_384_images.json";
     const params = new URLSearchParams(window.location.search);
     const uuid = params.get("uuid") || "";
@@ -35,7 +35,7 @@
               if (!data.success) {
                 document.getElementById("info").innerText = "❌ " + data.message;
               } else {
-                document.getElementById("info").innerText = `✅ 已扣 1 點（UID: ${uid}）`;
+                document.getElementById("info").innerHTML = `✅ 已扣 1 點（UID: ${uid}）<br>✅ 剩餘點數：${data.remainingPoints}`;
                 const imageName = imageMap.find(i => i.id === data.id)?.image || "";
                 const imageUrl = `https://srluo.github.io/NFC-i384/images/${imageName}`;
                 document.getElementById("result").innerHTML = `
