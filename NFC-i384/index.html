@@ -1,139 +1,46 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>諸葛神算抽籤</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: "Noto Serif TC", serif;
-      background-color: #fdfcf8;
-      color: #333;
-      padding: 2em;
-      text-align: center;
-      max-width: 600px;
-      margin: auto;
-    }
-    h1 {
-      font-size: 2em;
-      margin-bottom: 0.5em;
-    }
-    button {
-      padding: 1em 2em;
-      font-size: 1.2em;
-      margin-top: 1em;
-      background-color: #956d42;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #a67c52;
-    }
-    #status {
-      font-size: 1.1em;
-      margin-bottom: 1em;
-    }
-    #result {
-      margin-top: 2em;
-      text-align: left;
-      line-height: 1.8;
-      font-size: 1.1em;
-      display: none;
-      animation: fadeIn 0.5s ease-in-out;
-    }
-    .section {
-      margin-bottom: 1.5em;
-    }
-    .label {
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-bottom: 0.3em;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 0.2em;
-    }
-    #hint {
-      color: #888;
-      margin-top: 2em;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
+    body { font-family: sans-serif; padding: 20px; max-width: 480px; margin: auto; }
+    #result { margin-top: 20px; }
+    button { padding: 10px 20px; font-size: 16px; }
   </style>
 </head>
 <body>
-  <h1>📜 諸葛神算靈籤</h1>
-  <div id="status">載入中...</div>
-  <button id="drawBtn" onclick="drawFortune()" style="display:none;">🔮 抽一支籤</button>
-  <div id="result">
-    <div class="section">
-      <div class="label">第 <span id="poem-id"></span> 籤</div>
-      <div id="poem-text"></div>
-    </div>
-    <div class="section">
-      <div class="label">解籤參考</div>
-      <div id="explanation-text"></div>
-    </div>
-  </div>
-  <div id="hint"></div>
-
+  <h2>🔮 諸葛神算抽籤</h2>
+  <div id="info">正在驗證 Token...</div>
+  <div id="result"></div>
   <script>
-    const apiURL = "https://script.google.com/macros/s/AKfycbw2aOsimxnqS4eSuKdDrCs6HNbRXS6eu_iSvtQz-QhPE8uR6e92UwbVI7ALqLCJzlCM/exec";
-    let token = null;
-    let tokenIssuedAt = null;
+    const apiURL = "https://script.google.com/macros/s/AKfycbzj96f0BMAJuLeVpatqKlsh3HYcdvNq9RXNOicbVfayif22Y_lkRH3AfoeLoaai0Ut1Sg/exec";
+    const params = new URLSearchParams(window.location.search);
+    const uuid = params.get("uuid") || "";
+    const uid = uuid.substring(0, 14);
+    const token = uuid.substring(16);
 
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
+    if (!uuid || uuid.length < 32) {
+      document.getElementById("info").innerText = "❌ 格式錯誤，請使用有效連結";
+    } else {
+      fetch(`${apiURL}?action=use_token&uid=${uid}&token=${token}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            document.getElementById("info").innerText = "❌ " + data.message;
+          } else {
+            document.getElementById("info").innerText = `✅ 已扣 1 點（UID: ${uid}）`;
+            document.getElementById("result").innerHTML = `
+              <h3>第 ${data.id} 籤</h3>
+              <p><strong>籤詩：</strong><br>${data.poem.replaceAll("\n", "<br>")}</p>
+              <p><strong>解籤參考：</strong><br>${data.explanation.replaceAll("\n", "<br>")}</p>
+            `;
+          }
+        }).catch(err => {
+          document.getElementById("info").innerText = "❌ 抽籤失敗：" + err;
+        });
     }
-
-    async function getToken(uid) {
-      const res = await fetch(`${apiURL}?uid=${uid}&action=generate_token`);
-      const data = await res.json();
-      if (data.token) {
-        token = data.token;
-        tokenIssuedAt = Date.now();
-        document.getElementById("status").innerText = `✅ 驗證成功，剩餘點數：${data.points}`;
-        document.getElementById("drawBtn").style.display = "inline-block";
-        setTimeout(() => {
-          token = null;
-          document.getElementById("status").innerText = "⚠️ 此頁已過期，請重新刷卡取得新籤。";
-          document.getElementById("drawBtn").style.display = "none";
-        }, 60000);
-      } else {
-        document.getElementById("status").innerText = "❌ 驗證失敗或點數不足";
-      }
-    }
-
-    async function drawFortune() {
-      if (!token) {
-        document.getElementById("status").innerText = "⚠️ Token 已過期，請重新刷卡";
-        return;
-      }
-      const res = await fetch(`${apiURL}?action=use_token&token=${token}`);
-      const data = await res.json();
-      if (!data.success) {
-        document.getElementById("status").innerText = `❌ ${data.message}`;
-        return;
-      }
-      document.getElementById("drawBtn").style.display = "none";
-      document.getElementById("poem-id").textContent = data.id;
-      document.getElementById("poem-text").textContent = data.poem;
-      document.getElementById("explanation-text").textContent = data.explanation;
-      document.getElementById("result").style.display = "block";
-      document.getElementById("hint").textContent = "🙏 請重新刷 NFC 卡以再次抽籤";
-    }
-
-    (async () => {
-      const uid = getQueryParam("uid");
-      if (!uid) {
-        document.getElementById("status").innerText = "❌ 缺少 UID，請用 LINE 掃 NFC 進入";
-        return;
-      }
-      await getToken(uid);
-    })();
   </script>
 </body>
 </html>
