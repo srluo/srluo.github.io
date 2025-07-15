@@ -35,7 +35,7 @@
               if (!data.success) {
                 document.getElementById("info").innerText = "❌ " + data.message;
               } else {
-                document.getElementById("info").innerText = `✅ 已扣 1 點（UID: ${uid}）`;
+                document.getElementById("info").innerText = `✅ 已扣 1 點（UID: ${uid}）剩餘點數：${data.remainingPoints}`;
                 const imageName = imageMap.find(i => i.id === data.id)?.image || "";
                 const imageUrl = `https://srluo.github.io/NFC-i384/images/${imageName}`;
                 document.getElementById("result").innerHTML = `
