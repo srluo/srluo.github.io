@@ -5,11 +5,17 @@
   <title>MBTI 測驗入口</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: sans-serif; text-align: center; padding-top: 60px; }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 480px;
+      margin: auto;
+    }
     .btn {
-      display: inline-block;
-      margin: 10px;
-      padding: 14px 28px;
+      display: block;
+      margin: 16px auto;
+      padding: 14px 24px;
       background-color: #007bff;
       color: white;
       text-decoration: none;
@@ -17,26 +23,49 @@
       font-size: 18px;
     }
     .error { color: red; margin-top: 20px; }
+    .success { color: green; margin-bottom: 20px; }
   </style>
 </head>
 <body>
-  <div id="result">
-    <p>🔄 驗證中，請稍候…</p>
+  <h2>🔍 MBTI 測驗驗證中...</h2>
+  <div id="status"></div>
+  <div id="options" style="display:none">
+    <h3>請選擇您的測驗版本：</h3>
+    <a class="btn" id="link24" target="_blank">精簡版測驗（24 題）</a>
+    <a class="btn" id="link48" target="_blank">完整版測驗（48 題）</a>
   </div>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    const result = document.getElementById('result');
 
-    if (!token) {
-      result.innerHTML = `<p class="error">❌ 缺少 token 參數</p>`;
+  <script>
+    const apiURL = "https://script.google.com/macros/s/AKfycbwo8AF6T9nxtA0DDNkrP-oSNfr8b2EUvfDntsztEDFGpmg7NAMO5UtzXR095iC96y92ng/exec";
+    const form24 = "https://docs.google.com/forms/d/e/1FAIpQLSerzroOj4roQTnfrEHcP3uXRRsGoJW7MtRmu63f6_fHv5HD4w/viewform?usp=pp_url&entry.1056920539=";
+    const form48 = "https://docs.google.com/forms/d/e/1FAIpQLSftlhABBIQUdhePPs35vgKljRmWpTBFLl9OG1DGPxCjR3hytA/viewform?usp=pp_url&entry.889409832=";
+
+    const params = new URLSearchParams(location.search);
+    const uuid = params.get("uuid") || "";
+    const uid = uuid.substring(0, 14);
+    const token = uuid.substring(16);
+
+    const statusDiv = document.getElementById("status");
+
+    if (!uuid || uuid.length < 32) {
+      statusDiv.innerHTML = '<p class="error">❌ 錯誤：連結格式不正確</p>';
     } else {
-      result.innerHTML = `
-        <h2>🎯 選擇您的 MBTI 測驗版本</h2>
-        <p>系統已驗證您的授權，請選擇下列測驗版本：</p>
-        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSerzroOj4roQTnfrEHcP3uXRRsGoJW7MtRmu63f6_fHv5HD4w/viewform?usp=pp_url&entry.1056920539=${token}" target="_blank">精簡版測驗（24 題）</a>
-        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSftlhABBIQUdhePPs35vgKljRmWpTBFLl9OG1DGPxCjR3hytA/viewform?usp=pp_url&entry.889409832=${token}" target="_blank">完整版測驗（48 題）</a>
-      `;
+      fetch(`${apiURL}?action=use_token&uid=${uid}&token=${token}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            statusDiv.innerHTML = `<p class="error">❌ ${data.message}</p>`;
+          } else {
+            document.querySelector("h2").innerText = "✅ 驗證成功！";
+            statusDiv.innerHTML = `<p class="success">UID：${uid}｜已扣 1 點</p>`;
+            document.getElementById("link24").href = form24 + token;
+            document.getElementById("link48").href = form48 + token;
+            document.getElementById("options").style.display = "block";
+          }
+        })
+        .catch(err => {
+          statusDiv.innerHTML = `<p class="error">❌ 無法驗證 Token：${err}</p>`;
+        });
     }
   </script>
 </body>
