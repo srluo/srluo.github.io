@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>塔羅占卜入口</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 40px 20px; max-width: 480px; margin: auto; }
+    .btn {
+      display: block;
+      margin: 16px auto;
+      padding: 14px 24px;
+      background-color: #6a1b9a;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 18px;
+    }
+    .error { color: red; margin-top: 20px; }
+    .success { color: green; margin-bottom: 20px; }
+    img { max-width: 160px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <img src="../NFC-i384/images/N2G_logo_WL_A30.png" alt="Logo">
+  <h2>🔮 塔羅占卜入口</h2>
+  <div id="status">驗證中...</div>
+  <div id="menu" style="display:none;">
+    <h3>請選擇占卜方式：</h3>
+    <a class="btn" id="linkT1">單張占卜</a>
+    <a class="btn" id="linkT3">三張牌占卜</a>
+    <a class="btn" id="linkT0">每日建議</a>
+  </div>
+
+  <script>
+    const apiURL = "https://script.google.com/macros/s/AKfycbwo8AF6T9nxtA0DDNkrP-oSNfr8b2EUvfDntsztEDFGpmg7NAMO5UtzXR095iC96y92ng/exec";
+    const params = new URLSearchParams(location.search);
+    const uuid = params.get("uuid") || "";
+    const uid = uuid.substring(0, 14);
+    const token = uuid.substring(16);
+
+    const statusDiv = document.getElementById("status");
+
+    if (!uuid || uuid.length < 32) {
+      statusDiv.innerHTML = '<p class="error">❌ 錯誤：連結格式不正確</p>';
+    } else {
+      fetch(`${apiURL}?action=use_token&uid=${uid}&token=${token}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            statusDiv.innerHTML = `<p class="error">❌ ${data.message}</p>`;
+          } else {
+            statusDiv.innerHTML = `<p class="success">✅ 驗證成功｜剩餘點數：${data.remainingPoints}</p>`;
+            document.getElementById("menu").style.display = "block";
+            document.getElementById("linkT1").href = `draw.html?uid=${uid}&token=${token}&tp=T1`;
+            document.getElementById("linkT3").href = `draw.html?uid=${uid}&token=${token}&tp=T3`;
+            document.getElementById("linkT0").href = `draw.html?uid=${uid}&token=${token}&tp=T0`;
+          }
+        })
+        .catch(err => {
+          statusDiv.innerHTML = `<p class="error">❌ 錯誤：${err}</p>`;
+        });
+    }
+  </script>
+</body>
+</html>

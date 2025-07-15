@@ -1,0 +1,266 @@
+[
+  {
+    "id": 385,
+    "card_id": 0,
+    "direction": "up",
+    "image": "card_00_upright.png"
+  },
+  {
+    "id": 386,
+    "card_id": 0,
+    "direction": "reverse",
+    "image": "card_00_reversed.png"
+  },
+  {
+    "id": 387,
+    "card_id": 1,
+    "direction": "up",
+    "image": "card_01_upright.png"
+  },
+  {
+    "id": 388,
+    "card_id": 1,
+    "direction": "reverse",
+    "image": "card_01_reversed.png"
+  },
+  {
+    "id": 389,
+    "card_id": 2,
+    "direction": "up",
+    "image": "card_02_upright.png"
+  },
+  {
+    "id": 390,
+    "card_id": 2,
+    "direction": "reverse",
+    "image": "card_02_reversed.png"
+  },
+  {
+    "id": 391,
+    "card_id": 3,
+    "direction": "up",
+    "image": "card_03_upright.png"
+  },
+  {
+    "id": 392,
+    "card_id": 3,
+    "direction": "reverse",
+    "image": "card_03_reversed.png"
+  },
+  {
+    "id": 393,
+    "card_id": 4,
+    "direction": "up",
+    "image": "card_04_upright.png"
+  },
+  {
+    "id": 394,
+    "card_id": 4,
+    "direction": "reverse",
+    "image": "card_04_reversed.png"
+  },
+  {
+    "id": 395,
+    "card_id": 5,
+    "direction": "up",
+    "image": "card_05_upright.png"
+  },
+  {
+    "id": 396,
+    "card_id": 5,
+    "direction": "reverse",
+    "image": "card_05_reversed.png"
+  },
+  {
+    "id": 397,
+    "card_id": 6,
+    "direction": "up",
+    "image": "card_06_upright.png"
+  },
+  {
+    "id": 398,
+    "card_id": 6,
+    "direction": "reverse",
+    "image": "card_06_reversed.png"
+  },
+  {
+    "id": 399,
+    "card_id": 7,
+    "direction": "up",
+    "image": "card_07_upright.png"
+  },
+  {
+    "id": 400,
+    "card_id": 7,
+    "direction": "reverse",
+    "image": "card_07_reversed.png"
+  },
+  {
+    "id": 401,
+    "card_id": 8,
+    "direction": "up",
+    "image": "card_08_upright.png"
+  },
+  {
+    "id": 402,
+    "card_id": 8,
+    "direction": "reverse",
+    "image": "card_08_reversed.png"
+  },
+  {
+    "id": 403,
+    "card_id": 9,
+    "direction": "up",
+    "image": "card_09_upright.png"
+  },
+  {
+    "id": 404,
+    "card_id": 9,
+    "direction": "reverse",
+    "image": "card_09_reversed.png"
+  },
+  {
+    "id": 405,
+    "card_id": 10,
+    "direction": "up",
+    "image": "card_10_upright.png"
+  },
+  {
+    "id": 406,
+    "card_id": 10,
+    "direction": "reverse",
+    "image": "card_10_reversed.png"
+  },
+  {
+    "id": 407,
+    "card_id": 11,
+    "direction": "up",
+    "image": "card_11_upright.png"
+  },
+  {
+    "id": 408,
+    "card_id": 11,
+    "direction": "reverse",
+    "image": "card_11_reversed.png"
+  },
+  {
+    "id": 409,
+    "card_id": 12,
+    "direction": "up",
+    "image": "card_12_upright.png"
+  },
+  {
+    "id": 410,
+    "card_id": 12,
+    "direction": "reverse",
+    "image": "card_12_reversed.png"
+  },
+  {
+    "id": 411,
+    "card_id": 13,
+    "direction": "up",
+    "image": "card_13_upright.png"
+  },
+  {
+    "id": 412,
+    "card_id": 13,
+    "direction": "reverse",
+    "image": "card_13_reversed.png"
+  },
+  {
+    "id": 413,
+    "card_id": 14,
+    "direction": "up",
+    "image": "card_14_upright.png"
+  },
+  {
+    "id": 414,
+    "card_id": 14,
+    "direction": "reverse",
+    "image": "card_14_reversed.png"
+  },
+  {
+    "id": 415,
+    "card_id": 15,
+    "direction": "up",
+    "image": "card_15_upright.png"
+  },
+  {
+    "id": 416,
+    "card_id": 15,
+    "direction": "reverse",
+    "image": "card_15_reversed.png"
+  },
+  {
+    "id": 417,
+    "card_id": 16,
+    "direction": "up",
+    "image": "card_16_upright.png"
+  },
+  {
+    "id": 418,
+    "card_id": 16,
+    "direction": "reverse",
+    "image": "card_16_reversed.png"
+  },
+  {
+    "id": 419,
+    "card_id": 17,
+    "direction": "up",
+    "image": "card_17_upright.png"
+  },
+  {
+    "id": 420,
+    "card_id": 17,
+    "direction": "reverse",
+    "image": "card_17_reversed.png"
+  },
+  {
+    "id": 421,
+    "card_id": 18,
+    "direction": "up",
+    "image": "card_18_upright.png"
+  },
+  {
+    "id": 422,
+    "card_id": 18,
+    "direction": "reverse",
+    "image": "card_18_reversed.png"
+  },
+  {
+    "id": 423,
+    "card_id": 19,
+    "direction": "up",
+    "image": "card_19_upright.png"
+  },
+  {
+    "id": 424,
+    "card_id": 19,
+    "direction": "reverse",
+    "image": "card_19_reversed.png"
+  },
+  {
+    "id": 425,
+    "card_id": 20,
+    "direction": "up",
+    "image": "card_20_upright.png"
+  },
+  {
+    "id": 426,
+    "card_id": 20,
+    "direction": "reverse",
+    "image": "card_20_reversed.png"
+  },
+  {
+    "id": 427,
+    "card_id": 21,
+    "direction": "up",
+    "image": "card_21_upright.png"
+  },
+  {
+    "id": 428,
+    "card_id": 21,
+    "direction": "nan",
+    "image": "card_21_reversed.png"
+  }
+]

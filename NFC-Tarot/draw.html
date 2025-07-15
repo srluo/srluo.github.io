@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>塔羅占卜結果</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 540px; margin: auto; text-align: center; }
+    .card { margin: 20px 0; }
+    .card img { max-width: 100%; height: auto; }
+    .desc { margin-top: 10px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>🔮 占卜結果</h2>
+  <div id="result">正在抽牌...</div>
+
+  <script>
+    const tarotPath = "./img/";
+    const tarotJSON = "./tarot_mapping.json";
+    const params = new URLSearchParams(location.search);
+    const tp = params.get("tp");
+    const uid = params.get("uid");
+    const token = params.get("token");
+
+    function drawCards(tp, deck) {
+      const result = document.getElementById("result");
+      let drawn = [];
+
+      if (tp === "T1") {
+        drawn = [deck[Math.floor(Math.random() * deck.length)]];
+      } else if (tp === "T3") {
+        while (drawn.length < 3) {
+          const card = deck[Math.floor(Math.random() * deck.length)];
+          if (!drawn.includes(card)) drawn.push(card);
+        }
+      } else {
+        const today = new Date().getDate();
+        drawn = [deck[today % deck.length]];
+      }
+
+      result.innerHTML = "";
+      drawn.forEach((card, idx) => {
+        const cardHTML = `
+          <div class="card">
+            <img src="${tarotPath}${card.image}" alt="${card.name}">
+            <div class="desc">
+              <strong>${card.name}</strong><br>
+              ${card.keyword}｜${card.direction === "正" ? "正位" : "逆位"}
+            </div>
+          </div>`;
+        result.innerHTML += cardHTML;
+      });
+    }
+
+    fetch(tarotJSON)
+      .then(res => res.json())
+      .then(data => drawCards(tp, data))
+      .catch(err => {
+        document.getElementById("result").innerHTML = "❌ 錯誤：" + err;
+      });
+  </script>
+</body>
+</html>
