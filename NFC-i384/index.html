@@ -1,21 +1,83 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <title>諸葛神算抽籤</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: sans-serif; padding: 2em; text-align: center; }
-    button { padding: 1em 2em; font-size: 18px; margin-top: 1em; }
-    #result { white-space: pre-wrap; margin-top: 2em; font-size: 18px; }
-    #hint { color: #555; margin-top: 1em; }
+    body {
+      font-family: "Noto Serif TC", serif;
+      background-color: #fdfcf8;
+      color: #333;
+      padding: 2em;
+      text-align: center;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+    button {
+      padding: 1em 2em;
+      font-size: 1.2em;
+      margin-top: 1em;
+      background-color: #956d42;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #a67c52;
+    }
+    #status {
+      font-size: 1.1em;
+      margin-bottom: 1em;
+    }
+    #result {
+      margin-top: 2em;
+      text-align: left;
+      line-height: 1.8;
+      font-size: 1.1em;
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .section {
+      margin-bottom: 1.5em;
+    }
+    .label {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-bottom: 0.3em;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.2em;
+    }
+    #hint {
+      color: #888;
+      margin-top: 2em;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
   </style>
 </head>
 <body>
-  <h1>📜 諸葛神算抽籤</h1>
+  <h1>📜 諸葛神算靈籤</h1>
   <div id="status">載入中...</div>
   <button id="drawBtn" onclick="drawFortune()" style="display:none;">🔮 抽一支籤</button>
-  <pre id="result"></pre>
+  <div id="result">
+    <div class="section">
+      <div class="label">第 <span id="poem-id"></span> 籤</div>
+      <div id="poem-text"></div>
+    </div>
+    <div class="section">
+      <div class="label">解籤參考</div>
+      <div id="explanation-text"></div>
+    </div>
+  </div>
   <div id="hint"></div>
 
   <script>
@@ -36,7 +98,7 @@
           if (fortunes.length > 0) {
             document.getElementById("drawBtn").style.display = "inline-block";
           } else {
-            document.getElementById("status").innerText += "\n⚠️ 籤詩資料尚未載入，請稍後再試";
+            document.getElementById("status").innerText += "\n⚠️ 籤詩資料尚未載入";
           }
         } else {
           document.getElementById("status").innerText = "❌ 點數不足，無法抽籤";
@@ -61,8 +123,11 @@
         return;
       }
       const pick = fortunes[Math.floor(Math.random() * fortunes.length)];
-      document.getElementById("result").textContent = `第 ${pick.id} 籤\n\n${pick.poem}\n\n${pick.explanation}`;
       document.getElementById("drawBtn").style.display = "none";
+      document.getElementById("poem-id").textContent = pick.id;
+      document.getElementById("poem-text").textContent = pick.poem;
+      document.getElementById("explanation-text").textContent = pick.explanation;
+      document.getElementById("result").style.display = "block";
       document.getElementById("hint").textContent = "🙏 請重新刷 NFC 卡以再次抽籤";
     }
 
