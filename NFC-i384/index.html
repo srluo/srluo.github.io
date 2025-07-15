@@ -39,7 +39,7 @@
                 document.getElementById("info").innerText = `✅ 已扣 1 點（UID: ${uid}）`;
                 const imageUrl = imageMap.find(i => i.id === data.id)?.image || "";
                 document.getElementById("result").innerHTML = `
-                  <h3>第 ${data.id} 籤</h3>
+                  <!-----<h3>第 ${data.id} 籤</h3>---->
                   <img src="${imageUrl}" alt="籤詩圖片">
                 `;
               }
