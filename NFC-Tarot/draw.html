@@ -12,120 +12,109 @@
       margin: auto;
       text-align: center;
     }
-
     .card-container {
+      margin: 20px 0;
       perspective: 1000px;
-      display: inline-block;
-      margin: 20px 10px;
     }
-
+    .label {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
     .card {
-      width: 160px;
-      height: 260px;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 1s;
+      transition: transform 0.8s;
       cursor: pointer;
     }
-
     .card.flipped {
       transform: rotateY(180deg);
     }
-
     .card-face {
       position: absolute;
       width: 100%;
-      height: 100%;
       backface-visibility: hidden;
-      border-radius: 12px;
-      overflow: hidden;
     }
-
+    .card-back img, .card-front img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
     .card-front {
       transform: rotateY(180deg);
     }
-
-    .card-face img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
     .desc {
-      margin-top: 8px;
+      margin-top: 10px;
       font-size: 16px;
-    }
-
-    .label {
-      font-weight: bold;
-      margin-bottom: 6px;
+      display: none;
     }
   </style>
 </head>
 <body>
   <h2>🔮 占卜結果</h2>
-  <p id="subtitle"></p>
   <div id="result">正在抽牌...</div>
 
   <script>
     const tarotPath = "./img/";
     const tarotJSON = "./tarot_22_cards_tw.json";
-    const cardBackImage = tarotPath + "card_back_n2g.png"; // 請確認此圖已上傳
-
+    const cardBackImage = "./img/card_back.png";
     const params = new URLSearchParams(location.search);
     const tp = params.get("tp");
     const uid = params.get("uid");
     const token = params.get("token");
 
-    const labels = ["過去", "現在", "未來"];
-
     function drawCards(tp, deck) {
       const result = document.getElementById("result");
-      const subtitle = document.getElementById("subtitle");
       let drawn = [];
+      let labels = [];
 
       if (tp === "T1") {
         drawn = [deck[Math.floor(Math.random() * deck.length)]];
-        subtitle.innerText = "單張占卜";
+        labels = [""];
       } else if (tp === "T3") {
         while (drawn.length < 3) {
           const card = deck[Math.floor(Math.random() * deck.length)];
           if (!drawn.includes(card)) drawn.push(card);
         }
-        subtitle.innerText = "三張牌占卜（過去／現在／未來）";
+        labels = ["過去", "現在", "未來"];
       } else {
         const today = new Date().getDate();
         drawn = [deck[today % deck.length]];
-        subtitle.innerText = "每日建議";
+        labels = ["每日建議"];
       }
 
       result.innerHTML = "";
-
       drawn.forEach((card, idx) => {
-        const cardDiv = document.createElement("div");
-        cardDiv.className = "card-container";
-
-        const label = tp === "T3" ? `<div class="label">${labels[idx]}</div>` : "";
-
-        cardDiv.innerHTML = `
-          ${label}
-          <div class="card">
-            <div class="card-face card-back">
-              <img src="${cardBackImage}" alt="背面">
+        const label = labels[idx] ? `<div class="label">${labels[idx]}</div>` : "";
+        const cardHTML = `
+          <div class="card-container">
+            ${label}
+            <div class="card">
+              <div class="card-face card-back">
+                <img src="${cardBackImage}" alt="背面">
+              </div>
+              <div class="card-face card-front">
+                <img src="${tarotPath}${card.image}" alt="${card.name}">
+              </div>
             </div>
-            <div class="card-face card-front">
-              <img src="${tarotPath}${card.image}" alt="${card.description}">
-            </div>
-          </div>
-          <div class="desc">${card.description}</div>
-        `;
-        result.appendChild(cardDiv);
+            <div class="desc">${card.description}</div>
+          </div>`;
+        result.innerHTML += cardHTML;
       });
 
-      // 加入點擊翻牌效果
       document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', () => {
           card.classList.toggle('flipped');
+          const desc = card.parentElement.querySelector('.desc');
+          if (card.classList.contains('flipped')) {
+            desc.style.display = 'block';
+          } else {
+            desc.style.display = 'none';
+          }
         });
       });
     }
