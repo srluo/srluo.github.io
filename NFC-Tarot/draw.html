@@ -5,55 +5,128 @@
   <title>塔羅占卜結果</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 540px; margin: auto; text-align: center; }
-    .card { margin: 20px 0; }
-    .card img { max-width: 100%; height: auto; }
-    .desc { margin-top: 10px; font-size: 16px; }
-    h3.label { margin-top: 30px; color: #6a1b9a; }
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 540px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .card-container {
+      perspective: 1000px;
+      display: inline-block;
+      margin: 20px 10px;
+    }
+
+    .card {
+      width: 160px;
+      height: 260px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1s;
+      cursor: pointer;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .card-front {
+      transform: rotateY(180deg);
+    }
+
+    .card-face img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .desc {
+      margin-top: 8px;
+      font-size: 16px;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
   </style>
 </head>
 <body>
   <h2>🔮 占卜結果</h2>
+  <p id="subtitle"></p>
   <div id="result">正在抽牌...</div>
 
   <script>
     const tarotPath = "./img/";
     const tarotJSON = "./tarot_22_cards_tw.json";
+    const cardBackImage = tarotPath + "card_back_n2g.png"; // 請確認此圖已上傳
+
     const params = new URLSearchParams(location.search);
     const tp = params.get("tp");
     const uid = params.get("uid");
     const token = params.get("token");
 
+    const labels = ["過去", "現在", "未來"];
+
     function drawCards(tp, deck) {
       const result = document.getElementById("result");
+      const subtitle = document.getElementById("subtitle");
       let drawn = [];
 
       if (tp === "T1") {
         drawn = [deck[Math.floor(Math.random() * deck.length)]];
+        subtitle.innerText = "單張占卜";
       } else if (tp === "T3") {
         while (drawn.length < 3) {
           const card = deck[Math.floor(Math.random() * deck.length)];
           if (!drawn.includes(card)) drawn.push(card);
         }
+        subtitle.innerText = "三張牌占卜（過去／現在／未來）";
       } else {
         const today = new Date().getDate();
         drawn = [deck[today % deck.length]];
+        subtitle.innerText = "每日建議";
       }
 
-      const labels = ["過去", "現在", "未來"];
       result.innerHTML = "";
 
       drawn.forEach((card, idx) => {
-        const label = (tp === "T3") ? `<h2 class="label">🔸 ${labels[idx]}</h2>` : "";
-        const cardHTML = `
+        const cardDiv = document.createElement("div");
+        cardDiv.className = "card-container";
+
+        const label = tp === "T3" ? `<div class="label">${labels[idx]}</div>` : "";
+
+        cardDiv.innerHTML = `
+          ${label}
           <div class="card">
-            ${label}
-            <img src="${tarotPath}${card.image}" alt="${card.description}">
-            <div class="desc">
-              <strong>${card.description}</strong><br>
+            <div class="card-face card-back">
+              <img src="${cardBackImage}" alt="背面">
             </div>
-          </div>`;
-        result.innerHTML += cardHTML;
+            <div class="card-face card-front">
+              <img src="${tarotPath}${card.image}" alt="${card.description}">
+            </div>
+          </div>
+          <div class="desc">${card.description}</div>
+        `;
+        result.appendChild(cardDiv);
+      });
+
+      // 加入點擊翻牌效果
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => {
+          card.classList.toggle('flipped');
+        });
       });
     }
 
