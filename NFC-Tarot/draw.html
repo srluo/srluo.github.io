@@ -5,53 +5,11 @@
   <title>塔羅占卜結果</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      max-width: 540px;
-      margin: auto;
-      text-align: center;
-    }
-    .card-container {
-      margin: 30px 0;
-      perspective: 1000px;
-    }
-    .label {
-      font-weight: bold;
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-    .card {
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.8s;
-      cursor: pointer;
-    }
-    .card.flipped {
-      transform: rotateY(180deg);
-    }
-    .card-face {
-      position: absolute;
-      width: 100%;
-      backface-visibility: hidden;
-    }
-    .card-back img, .card-front img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-    .card-front {
-      transform: rotateY(180deg);
-    }
-    .desc {
-      margin-top: 10px;
-      font-size: 16px;
-      display: none;
-    }
+    body { font-family: sans-serif; padding: 20px; max-width: 540px; margin: auto; text-align: center; }
+    .card { margin: 20px 0; }
+    .card img { max-width: 100%; height: auto; }
+    .desc { margin-top: 10px; font-size: 16px; }
+    h3.label { margin-top: 30px; color: #6a1b9a; }
   </style>
 </head>
 <body>
@@ -61,7 +19,6 @@
   <script>
     const tarotPath = "./img/";
     const tarotJSON = "./tarot_22_cards_tw.json";
-    const cardBackImage = "./img/card_back_n2g.png";
     const params = new URLSearchParams(location.search);
     const tp = params.get("tp");
     const uid = params.get("uid");
@@ -70,52 +27,33 @@
     function drawCards(tp, deck) {
       const result = document.getElementById("result");
       let drawn = [];
-      let labels = [];
 
       if (tp === "T1") {
         drawn = [deck[Math.floor(Math.random() * deck.length)]];
-        labels = [""];
       } else if (tp === "T3") {
         while (drawn.length < 3) {
           const card = deck[Math.floor(Math.random() * deck.length)];
           if (!drawn.includes(card)) drawn.push(card);
         }
-        labels = ["過去", "現在", "未來"];
       } else {
         const today = new Date().getDate();
         drawn = [deck[today % deck.length]];
-        labels = ["每日建議"];
       }
 
+      const labels = ["過去", "現在", "未來"];
       result.innerHTML = "";
+
       drawn.forEach((card, idx) => {
-        const label = labels[idx] ? `<div class="label">${labels[idx]}</div>` : "";
+        const label = (tp === "T3") ? `<h2 class="label">🔸 ${labels[idx]}</h2>` : "";
         const cardHTML = `
-          <div class="card-container">
+          <div class="card">
             ${label}
-            <div class="card">
-              <div class="card-face card-back">
-                <img src="${cardBackImage}" alt="背面">
-              </div>
-              <div class="card-face card-front">
-                <img src="${tarotPath}${card.image}" alt="${card.description}">
-              </div>
+            <img src="${tarotPath}${card.image}" alt="${card.description}">
+            <div class="desc">
+              <strong>${card.description}</strong><br>
             </div>
-            <div class="desc">${card.description}</div>
           </div>`;
         result.innerHTML += cardHTML;
-      });
-
-      document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', () => {
-          card.classList.toggle('flipped');
-          const desc = card.parentElement.querySelector('.desc');
-          if (card.classList.contains('flipped')) {
-            desc.style.display = 'block';
-          } else {
-            desc.style.display = 'none';
-          }
-        });
       });
     }
 
