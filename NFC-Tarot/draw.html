@@ -98,10 +98,10 @@
                 <img src="${cardBackImage}" alt="背面">
               </div>
               <div class="card-face card-front">
-                <img src="${tarotPath}${card.image}" alt="${card.name}">
+                <img src="${tarotPath}${card.image}" alt="${card.description}">
               </div>
             </div>
-            <div class="desc">${card.description}</div>
+            <div class="desc">${card.description}<br><br></div>
           </div>`;
         result.innerHTML += cardHTML;
       });
