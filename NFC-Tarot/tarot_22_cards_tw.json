@@ -1,310 +1,346 @@
 [
   {
     "id": 385,
-    "card_id": 0,
-    "direction": "reverse",
+    "tarot_id": 0,
+    "direction": "up",
+    "image": "card_00_upright.png",
     "description": "0 愚者 正位",
-    "image": "card_00_upright.png"
+    "note": "一場全新的冒險即將展開，別怕，勇敢嘗試吧！"
   },
   {
     "id": 386,
-    "card_id": 0,
+    "tarot_id": 0,
     "direction": "reverse",
+    "image": "card_00_reversed.png",
     "description": "0 愚者 逆位",
-    "image": "card_00_reversed.png"
+    "note": "別太衝動，現在不宜貿然行動，小心踩空。"
   },
   {
     "id": 387,
-    "card_id": 1,
-    "direction": "reverse",
+    "tarot_id": 1,
+    "direction": "up",
+    "image": "card_01_upright.png",
     "description": "I 魔術師 正位",
-    "image": "card_01_upright.png"
+    "note": "機會來了，動起來！你有能力掌握現在的一切。"
   },
   {
     "id": 388,
-    "card_id": 1,
+    "tarot_id": 1,
     "direction": "reverse",
+    "image": "card_01_reversed.png",
     "description": "I 魔術師 逆位",
-    "image": "card_01_reversed.png"
+    "note": "話術或操作太過，別耍小聰明，小心被看破手腳。"
   },
   {
     "id": 389,
-    "card_id": 2,
-    "direction": "reverse",
+    "tarot_id": 2,
+    "direction": "up",
+    "image": "card_02_upright.png",
     "description": "II 女祭司 正位",
-    "image": "card_02_upright.png"
+    "note": "靜下心傾聽直覺，答案其實早就在你心裡。"
   },
   {
     "id": 390,
-    "card_id": 2,
+    "tarot_id": 2,
     "direction": "reverse",
+    "image": "card_02_reversed.png",
     "description": "II 女祭司 逆位",
-    "image": "card_02_reversed.png"
+    "note": "別太憑感覺，要留意真相是否被隱藏。"
   },
   {
     "id": 391,
-    "card_id": 3,
-    "direction": "reverse",
+    "tarot_id": 3,
+    "direction": "up",
+    "image": "card_03_upright.png",
     "description": "III 皇后 正位",
-    "image": "card_03_upright.png"
+    "note": "愛與豐盛圍繞著你，好好享受溫暖與關懷吧！"
   },
   {
     "id": 392,
-    "card_id": 3,
+    "tarot_id": 3,
     "direction": "reverse",
+    "image": "card_03_reversed.png",
     "description": "III 皇后 逆位",
-    "image": "card_03_reversed.png"
+    "note": "太過依賴或過度溺愛，小心讓人喘不過氣。"
   },
   {
     "id": 393,
-    "card_id": 4,
-    "direction": "reverse",
+    "tarot_id": 4,
+    "direction": "up",
+    "image": "card_04_upright.png",
     "description": "IV 皇帝 正位",
-    "image": "card_04_upright.png"
+    "note": "穩定掌控全局，是你展現領導力的時刻。"
   },
   {
     "id": 394,
-    "card_id": 4,
+    "tarot_id": 4,
     "direction": "reverse",
+    "image": "card_04_reversed.png",
     "description": "IV 皇帝 逆位",
-    "image": "card_04_reversed.png"
+    "note": "太強勢可能反而造成壓力，試著放軟一些。"
   },
   {
     "id": 395,
-    "card_id": 5,
-    "direction": "reverse",
+    "tarot_id": 5,
+    "direction": "up",
+    "image": "card_05_upright.png",
     "description": "V 教皇 正位",
-    "image": "card_05_upright.png"
+    "note": "傳統與規範將帶來指引，適合遵循規矩行事。"
   },
   {
     "id": 396,
-    "card_id": 5,
+    "tarot_id": 5,
     "direction": "reverse",
+    "image": "card_05_reversed.png",
     "description": "V 教皇 逆位",
-    "image": "card_05_reversed.png"
+    "note": "跳脫框架也許是現在最需要的突破。"
   },
   {
     "id": 397,
-    "card_id": 6,
-    "direction": "reverse",
+    "tarot_id": 6,
+    "direction": "up",
+    "image": "card_06_upright.png",
     "description": "VI 戀人 正位",
-    "image": "card_06_upright.png"
+    "note": "愛情或重要選擇降臨，用心去連結吧！"
   },
   {
     "id": 398,
-    "card_id": 6,
+    "tarot_id": 6,
     "direction": "reverse",
+    "image": "card_06_reversed.png",
     "description": "VI 戀人逆位",
-    "image": "card_06_reversed.png"
+    "note": "糾結與猶豫讓你卡住了，是時候做出決定。"
   },
   {
     "id": 399,
-    "card_id": 7,
-    "direction": "reverse",
+    "tarot_id": 7,
+    "direction": "up",
+    "image": "card_07_upright.png",
     "description": "VII 戰車 正位",
-    "image": "card_07_upright.png"
+    "note": "鼓起幹勁，衝就對了！你會贏得勝利。"
   },
   {
     "id": 400,
-    "card_id": 7,
+    "tarot_id": 7,
     "direction": "reverse",
+    "image": "card_07_reversed.png",
     "description": "VII 戰車 逆位",
-    "image": "card_07_reversed.png"
+    "note": "衝太快可能失控，先確定方向再前進。"
   },
   {
     "id": 401,
-    "card_id": 8,
-    "direction": "reverse",
+    "tarot_id": 8,
+    "direction": "up",
+    "image": "card_08_upright.png",
     "description": "VIII 力量 正位",
-    "image": "card_08_upright.png"
+    "note": "你的溫柔和勇氣能化解一切問題。"
   },
   {
     "id": 402,
-    "card_id": 8,
+    "tarot_id": 8,
     "direction": "reverse",
+    "image": "card_08_reversed.png",
     "description": "VIII 力量 逆位",
-    "image": "card_08_reversed.png"
+    "note": "不要勉強自己，承認脆弱也是一種力量。"
   },
   {
     "id": 403,
-    "card_id": 9,
-    "direction": "reverse",
+    "tarot_id": 9,
+    "direction": "up",
+    "image": "card_09_upright.png",
     "description": "IX 隱者 正位",
-    "image": "card_09_upright.png"
+    "note": "靜下來思考內心的聲音，是成長的契機。"
   },
   {
     "id": 404,
-    "card_id": 9,
+    "tarot_id": 9,
     "direction": "reverse",
+    "image": "card_09_reversed.png",
     "description": "IX 隱者 逆位",
-    "image": "card_09_reversed.png"
+    "note": "不要一味退縮，適時敞開心扉與人交流。"
   },
   {
     "id": 405,
-    "card_id": 10,
-    "direction": "reverse",
+    "tarot_id": 10,
+    "direction": "up",
+    "image": "card_10_upright.png",
     "description": "X 命運之輪 正位",
-    "image": "card_10_upright.png"
+    "note": "好運輪轉到你這邊了，好好把握機會！"
   },
   {
     "id": 406,
-    "card_id": 10,
+    "tarot_id": 10,
     "direction": "reverse",
+    "image": "card_10_reversed.png",
     "description": "X 命運之輪 逆位",
-    "image": "card_10_reversed.png"
+    "note": "時機不對，先靜觀其變，轉機會來的。"
   },
   {
     "id": 407,
-    "card_id": 11,
-    "direction": "reverse",
+    "tarot_id": 11,
+    "direction": "up",
+    "image": "card_11_upright.png",
     "description": "XI 正義 正位",
-    "image": "card_11_upright.png"
+    "note": "一切公平公正，結果會按規則來決定。"
   },
   {
     "id": 408,
-    "card_id": 11,
+    "tarot_id": 11,
     "direction": "reverse",
+    "image": "card_11_reversed.png",
     "description": "XI 正義 逆位",
-    "image": "card_11_reversed.png"
+    "note": "小心誤判或偏頗，要多方了解真相。"
   },
   {
     "id": 409,
-    "card_id": 12,
-    "direction": "reverse",
+    "tarot_id": 12,
+    "direction": "up",
+    "image": "card_12_upright.png",
     "description": "XII 倒吊人 正位",
-    "image": "card_12_upright.png"
+    "note": "犧牲是必要的，換個角度世界就不同了。"
   },
   {
     "id": 410,
-    "card_id": 12,
+    "tarot_id": 12,
     "direction": "reverse",
+    "image": "card_12_reversed.png",
     "description": "XII 倒吊人 逆位",
-    "image": "card_12_reversed.png"
+    "note": "固執己見只會讓你越卡越死，放下執念吧。"
   },
   {
     "id": 411,
-    "card_id": 13,
-    "direction": "reverse",
+    "tarot_id": 13,
+    "direction": "up",
+    "image": "card_13_upright.png",
     "description": "XIII 死亡  正位",
-    "image": "card_13_upright.png"
+    "note": "舊的結束，新的開始，勇敢斷捨離。"
   },
   {
     "id": 412,
-    "card_id": 13,
+    "tarot_id": 13,
     "direction": "reverse",
+    "image": "card_13_reversed.png",
     "description": "XIII 死亡  逆位",
-    "image": "card_13_reversed.png"
+    "note": "明知該結束卻放不下，痛苦只會加深。"
   },
   {
     "id": 413,
-    "card_id": 14,
-    "direction": "reverse",
+    "tarot_id": 14,
+    "direction": "up",
+    "image": "card_14_upright.png",
     "description": "XIV 節制 正位",
-    "image": "card_14_upright.png"
+    "note": "保持平衡與和諧，凡事剛剛好最美。"
   },
   {
     "id": 414,
-    "card_id": 14,
+    "tarot_id": 14,
     "direction": "reverse",
+    "image": "card_14_reversed.png",
     "description": "XIV 節制 逆位",
-    "image": "card_14_reversed.png"
+    "note": "過與不及都是問題，重新調整節奏吧。"
   },
   {
     "id": 415,
-    "card_id": 15,
-    "direction": "reverse",
+    "tarot_id": 15,
+    "direction": "up",
+    "image": "card_15_upright.png",
     "description": "XV 魔鬼 正位",
-    "image": "card_15_upright.png"
+    "note": "慾望上升，要小心沉溺或被綁架。"
   },
   {
     "id": 416,
-    "card_id": 15,
+    "tarot_id": 15,
     "direction": "reverse",
+    "image": "card_15_reversed.png",
     "description": "XV 魔鬼 逆位",
-    "image": "card_15_reversed.png"
+    "note": "有機會擺脫束縛，重新掌握主導權。"
   },
   {
     "id": 417,
-    "card_id": 16,
-    "direction": "reverse",
+    "tarot_id": 16,
+    "direction": "up",
+    "image": "card_16_upright.png",
     "description": "XVI 高塔 正位",
-    "image": "card_16_upright.png"
+    "note": "劇變來襲，雖痛但能重建更強的自己。"
   },
   {
     "id": 418,
-    "card_id": 16,
+    "tarot_id": 16,
     "direction": "reverse",
+    "image": "card_16_reversed.png",
     "description": "XVI 高塔 逆位",
-    "image": "card_16_reversed.png"
+    "note": "雖然驚嚇，但已經避開最糟情況了。"
   },
   {
     "id": 419,
-    "card_id": 17,
-    "direction": "reverse",
+    "tarot_id": 17,
+    "direction": "up",
+    "image": "card_17_upright.png",
     "description": "XVII 星星 正位",
-    "image": "card_17_upright.png"
+    "note": "希望就在前方，別放棄，你正走在對的路上。"
   },
   {
     "id": 420,
-    "card_id": 17,
+    "tarot_id": 17,
     "direction": "reverse",
+    "image": "card_17_reversed.png",
     "description": "XVII 星星 逆位",
-    "image": "card_17_reversed.png"
+    "note": "有些太夢幻了，腳踏實地比較重要。"
   },
   {
     "id": 421,
-    "card_id": 18,
-    "direction": "reverse",
+    "tarot_id": 18,
+    "direction": "up",
+    "image": "card_18_upright.png",
     "description": "XVIII 月亮 正位",
-    "image": "card_18_upright.png"
+    "note": "有些事還不清楚，別太快下判斷。"
   },
   {
     "id": 422,
-    "card_id": 18,
+    "tarot_id": 18,
     "direction": "reverse",
+    "image": "card_18_reversed.png",
     "description": "XVIII 月亮 逆位",
-    "image": "card_18_reversed.png"
+    "note": "情緒容易迷失，要釐清自己真正的想法。"
   },
   {
     "id": 423,
-    "card_id": 19,
-    "direction": "reverse",
+    "tarot_id": 19,
+    "direction": "up",
+    "image": "card_19_upright.png",
     "description": "XIX 太陽 正位",
-    "image": "card_19_upright.png"
+    "note": "好事發生！充滿活力與正能量的一天。"
   },
   {
     "id": 424,
-    "card_id": 19,
+    "tarot_id": 19,
     "direction": "reverse",
+    "image": "card_19_reversed.png",
     "description": "XIX 太陽 逆位",
-    "image": "card_19_reversed.png"
+    "note": "太過樂觀可能忽略現實，要保持理智。"
   },
   {
     "id": 425,
-    "card_id": 20,
-    "direction": "reverse",
+    "tarot_id": 20,
+    "direction": "up",
+    "image": "card_20_upright.png",
     "description": "XX 審判 正位",
-    "image": "card_20_upright.png"
+    "note": "是時候覺醒與審視過去，迎接新生吧！"
   },
   {
     "id": 426,
-    "card_id": 20,
+    "tarot_id": 20,
     "direction": "reverse",
+    "image": "card_20_reversed.png",
     "description": "XX 審判 逆位",
-    "image": "card_20_reversed.png"
+    "note": "放不下過去就無法前進，試著原諒自己。"
   },
   {
     "id": 427,
-    "card_id": 21,
-    "direction": "reverse",
+    "tarot_id": 21,
+    "direction": "up",
+    "image": "card_21_upright.png",
     "description": "XXI 世界 正位",
-    "image": "card_21_upright.png"
-  },
-  {
-    "id": 428,
-    "card_id": 21,
-    "direction": "reverse",
-    "description": "XXI 世界 逆位",
-    "image": "card_21_reversed.png"
+    "note": "圓滿結局，一切步入正軌，恭喜你！"
   }
 ]
