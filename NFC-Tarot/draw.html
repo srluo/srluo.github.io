@@ -12,8 +12,15 @@
       margin: auto;
       text-align: center;
     }
+    #result {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+    }
     .card-container {
-      margin: 20px 0;
+      width: 45%;
       perspective: 1000px;
     }
     .label {
@@ -23,8 +30,6 @@
     }
     .card {
       width: 100%;
-      max-width: 300px;
-      margin: 0 auto;
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.8s;
