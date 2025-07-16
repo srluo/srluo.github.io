@@ -47,10 +47,11 @@
       fetch(`${apiURL}?action=use_token&uid=${uid}&token=${token}`)
         .then(res => res.json())
         .then(data => {
+          console.log(data);
           if (!data.success) {
             statusDiv.innerHTML = `<p class="error">❌ ${data.message}</p>`;
           } else {
-            statusDiv.innerHTML = `<p class="success">✅ 驗證成功｜剩餘點數：${data.remainingPoints}</p>`;
+            statusDiv.innerHTML = `<p class="success">🎉 授權成功！｜剩餘點數：${data.remainingPoints}</p>`;
             document.getElementById("menu").style.display = "block";
             document.getElementById("linkT1").href = `draw.html?uid=${uid}&token=${token}&tp=T1`;
             document.getElementById("linkT3").href = `draw.html?uid=${uid}&token=${token}&tp=T3`;
