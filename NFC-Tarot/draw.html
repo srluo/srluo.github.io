@@ -17,7 +17,7 @@
 
   <script>
     const tarotPath = "./img/";
-    const tarotJSON = "./tarot_mapping.json";
+    const tarotJSON = "./tarot_22_cards_tw.json";
     const params = new URLSearchParams(location.search);
     const tp = params.get("tp");
     const uid = params.get("uid");
@@ -46,7 +46,7 @@
             <img src="${tarotPath}${card.image}" alt="${card.name}">
             <div class="desc">
               <strong>${card.name}</strong><br>
-              ${card.keyword}｜${card.direction === "正" ? "正位" : "逆位"}
+              ${card.description}}
             </div>
           </div>`;
         result.innerHTML += cardHTML;
