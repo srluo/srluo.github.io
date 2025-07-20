@@ -40,7 +40,6 @@
     const uuid = params.get("uuid") || "";
     const uid = uuid.substring(0, 14);
     const token = uuid.substring(16);
-
     const statusDiv = document.getElementById("status");
 
     if (!uuid || uuid.length < 32) {
@@ -51,6 +50,11 @@
         .then(data => {
           if (!data.success) {
             statusDiv.innerHTML = `<p class="error">❌ ${data.message}</p>`;
+            return;
+          }
+
+          if (typeof VdoPlayer === 'undefined') {
+            statusDiv.innerHTML = '<p class="error">❌ 無法載入 VdoCipher 播放器</p>';
             return;
           }
 
@@ -66,7 +70,7 @@
           player.addEventListener("load", () => {
             console.log("播放器已載入");
 
-            // 啟動倒數
+            // ✅ 啟動倒數
             const countdownEl = document.getElementById("countdown");
             let secondsLeft = 300;
 
@@ -82,9 +86,13 @@
               }
             }, 1000);
           });
+
+          player.addEventListener("error", (e) => {
+            statusDiv.innerHTML = `<p class="error">❌ 播放器錯誤：${JSON.stringify(e)}</p>`;
+          });
         })
         .catch(err => {
-          console.error("發生錯誤：", err);
+          console.error("Fetch 錯誤：", err);
           statusDiv.innerHTML = '<p class="error">❌ 無法載入播放內容</p>';
         });
     }
