@@ -63,7 +63,7 @@
       const name = document.getElementById("name").value;
       const uid = document.getElementById("uid").value;
 
-      const url = "https://script.google.com/macros/s/AKfycbyc62c76q_tMwb8adNV9hfyjVZH821hECu7ESSS7O05aWwggDwZnzvQ1FW3a8ZqwysV/exec";
+      const url = "https://script.google.com/macros/s/AKfycbytiYXFh90M1jg393JgplvWUStVBlF9-xQkIhojSKbqzplyrG70knyQHL3F8pmv2Y2PvQ/exec";
       const res = await fetch(`${url}?action=register&uid=${uid}&name=${encodeURIComponent(name)}`);
       const data = await res.json();
 
