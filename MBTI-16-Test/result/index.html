@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MBTI 測驗結果</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="header">
+    <div class="badge">MBTI Result Card</div>
+    <h1 id="title">載入中…</h1>
+    <div class="small">點擊卡片即可翻面（支援滑動 / Space）</div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="card-inner">
+      <div class="face front"><img id="frontImg" alt="front" /></div>
+      <div class="face back"><img id="backImg" alt="back" /></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="controls">
+      <button class="btn" id="flipBtn">翻面</button>
+      <!--<button class="btn secondary" id="downloadBtn">下載目前圖片</button>> -->
+    </div>
+  </div>
+
+  <script src="types.js"></script>
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const type = (qs.get('type') || 'ESTP').toUpperCase();
+    const frontOverride = qs.get('front');
+    const backOverride  = qs.get('back');
+
+    const config = (window.MBTI_IMAGES && window.MBTI_IMAGES[type]) || null;
+
+    const title = document.getElementById('title');
+    const frontImg = document.getElementById('frontImg');
+    const backImg  = document.getElementById('backImg');
+    const card = document.getElementById('card');
+
+    if(!config && !frontOverride){
+      title.textContent = `無法辨識的 MBTI 類型：${type}`;
+    }else{
+      title.textContent = `你的 MBTI：${type}`;
+      const frontURL = frontOverride || config.front;
+      const backURL = backOverride || config.back || frontOverride || config.front;
+
+      frontImg.src = frontURL;
+      backImg.src = backURL;
+
+      // 預載
+      [frontURL, backURL].forEach(src => { const i = new Image(); i.src = src; });
+    }
+
+    // 翻面互動
+    const inner = card.querySelector('.card-inner');
+    function toggleFlip(){ card.classList.toggle('flipped'); }
+    card.addEventListener('click', toggleFlip);
+    document.getElementById('flipBtn').addEventListener('click', toggleFlip);
+    window.addEventListener('keydown', e => { if(e.code === 'Space') toggleFlip(); });
+
+    // 簡單的左右滑動翻面
+    let startX = null;
+    card.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+    card.addEventListener('touchend', e => {
+      if(startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 40) toggleFlip();
+      startX = null;
+    });
+
+    // 下載目前面向的圖片
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const showingBack = card.classList.contains('flipped');
+      const img = showingBack ? backImg : frontImg;
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = `${type}-${showingBack ? 'back' : 'front'}.png`;
+      a.click();
+    });
+  </script>
+</body>
+</html>
