@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NFC 我的生日書 Demo</title>
+<style>
+  body { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; margin:0; padding:20px; background:#fffaf6; color:#333; }
+  .wrap { max-width:760px; margin:0 auto; }
+  h1 { text-align:center; color:#c62828; }
+  .card { background:#fff; border:1px solid #eee; border-radius:12px; padding:16px 18px; margin:12px 0; box-shadow:0 4px 14px rgba(0,0,0,.06); }
+  h2 { color:#2e7d32; font-size:18px; margin:0 0 8px; }
+  footer { margin-top:20px; text-align:center; color:#888; font-size:12px; }
+  .wallet { font-size:18px; margin:10px 0; background:#eef7ff; border-radius:8px; padding:10px; }
+  .service li { margin:8px 0; }
+  .service button { margin-left:10px; }
+  .thumbnail { background:#fff3e0; padding:10px; border-radius:10px; text-align:center; margin:10px 0; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+function renderFirstTime() {
+  return `
+    <h1>🎂 我的生日書 (首次開卡)</h1>
+    <div class="card">
+      <h2>🌸 今日象徵</h2>
+      <p>生日花：雛菊（純真、希望）｜ 誕生石：鑽石（純淨、堅定）｜ 主宰行星：火星</p>
+    </div>
+    <div class="card">
+      <h2>✨ 性格氣質</h2>
+      <p>這一天出生的你，帶著開創能量與行動力，直率坦白，常常願意成為第一個站出來的人。</p>
+    </div>
+    <div class="card">
+      <h2>🌟 今日行動</h2>
+      <p>把腦中的想法做成 1 個可落地的下一步。</p>
+    </div>
+    <div class="card">
+      <h2>🎁 開卡禮</h2>
+      <p>恭喜獲得 <b>20 點探索點數</b>！</p>
+    </div>
+    <footer>© 2025 NFC 我的生日書</footer>
+  `;
+}
+
+function renderAfter() {
+  return `
+    <h1>🎂 我的生日書</h1>
+    <div class="thumbnail">
+      <p>📖 0404 生日書（縮圖版）</p>
+      <button onclick="expandBook()">展開完整內容</button>
+    </div>
+    <div class="wallet">💎 剩餘點數：<b id="points">20</b> 點</div>
+    <div class="card">
+      <h2>可使用服務</h2>
+      <ul class="service">
+        <li>紫微流年 (-3 點) <button onclick="usePoints(3)">啟用</button></li>
+        <li>占卜一次 (-1 點) <button onclick="usePoints(1)">抽籤</button></li>
+        <li>MBTI 檢測 (-5 點) <button onclick="usePoints(5)">開始</button></li>
+      </ul>
+    </div>
+    <footer>再次登入：重點是點數與服務 ｜ © 2025 NFC 我的生日書</footer>
+  `;
+}
+
+function expandBook() {
+  alert("這裡可以載入完整生日書內容頁（0404 全文）。");
+}
+
+function usePoints(cost) {
+  let points = parseInt(localStorage.getItem("points") || "20");
+  if(points >= cost) {
+    points -= cost;
+    localStorage.setItem("points", points);
+    document.getElementById("points").innerText = points;
+    alert("✅ 成功扣除 " + cost + " 點，請享用服務！");
+  } else {
+    alert("⚠️ 點數不足！");
+  }
+}
+
+function init() {
+  const opened = localStorage.getItem("first_opened");
+  if(!opened) {
+    // 第一次開卡
+    document.getElementById("app").innerHTML = renderFirstTime();
+    localStorage.setItem("first_opened", "1");
+    localStorage.setItem("points", "20"); // 初始化點數
+  } else {
+    // 之後登入
+    document.getElementById("app").innerHTML = renderAfter();
+    document.getElementById("points").innerText = localStorage.getItem("points");
+  }
+}
+init();
+</script>
+</body>
+</html>
