@@ -15,10 +15,23 @@
   .service li { margin:8px 0; }
   .service button { margin-left:10px; }
   .thumbnail { background:#fff3e0; padding:10px; border-radius:10px; text-align:center; margin:10px 0; }
+  .reset { margin-top:20px; text-align:center; }
+  .reset button { padding:6px 12px; border:none; border-radius:6px; background:#c62828; color:white; cursor:pointer; }
+  .history { margin-top:12px; font-size:14px; }
+  .history table { width:100%; border-collapse:collapse; }
+  .history th, .history td { border-bottom:1px solid #eee; padding:6px; text-align:left; }
+  .history th { background:#fafafa; }
+  .topup { margin:10px 0; background:#f0fff4; padding:12px; border-radius:10px; }
+  .topup input { padding:6px; border:1px solid #ccc; border-radius:6px; }
+  .topup button { margin-left:6px; padding:6px 12px; border:none; border-radius:6px; background:#2e7d32; color:white; cursor:pointer; }
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
+
+<div class="reset">
+  <button onclick="resetState()">🔄 重置開卡狀態</button>
+</div>
 
 <script>
 function renderFirstTime() {
@@ -45,6 +58,12 @@ function renderFirstTime() {
 }
 
 function renderAfter() {
+  let historyRows = loadHistory().map(
+    h => `<tr><td>${h.time}</td><td>${h.service}</td><td>${h.change}</td><td>${h.remain} 點</td></tr>`
+  ).join("");
+
+  if(!historyRows) historyRows = `<tr><td colspan="4">尚無交易紀錄</td></tr>`;
+
   return `
     <h1>🎂 我的生日書</h1>
     <div class="thumbnail">
@@ -52,13 +71,30 @@ function renderAfter() {
       <button onclick="expandBook()">展開完整內容</button>
     </div>
     <div class="wallet">💎 剩餘點數：<b id="points">20</b> 點</div>
+
+    <div class="card topup">
+      <h2>➕ 點數加值</h2>
+      <p>
+        <input id="topupCode" placeholder="輸入加值碼" />
+        <button onclick="redeemCode()">兌換</button>
+        <button onclick="addPoints(10,'系統加值')">+10 點 (模擬)</button>
+      </p>
+    </div>
+
     <div class="card">
       <h2>可使用服務</h2>
       <ul class="service">
-        <li>紫微流年 (-3 點) <button onclick="usePoints(3)">啟用</button></li>
-        <li>占卜一次 (-1 點) <button onclick="usePoints(1)">抽籤</button></li>
-        <li>MBTI 檢測 (-5 點) <button onclick="usePoints(5)">開始</button></li>
+        <li>紫微流年 (-3 點) <button onclick="usePoints(3,'紫微流年')">啟用</button></li>
+        <li>占卜一次 (-1 點) <button onclick="usePoints(1,'占卜一次')">抽籤</button></li>
+        <li>MBTI 檢測 (-5 點) <button onclick="usePoints(5,'MBTI 檢測')">開始</button></li>
       </ul>
+    </div>
+    <div class="card history">
+      <h2>📜 點數交易紀錄</h2>
+      <table>
+        <tr><th>時間</th><th>服務</th><th>變動</th><th>剩餘</th></tr>
+        ${historyRows}
+      </table>
     </div>
     <footer>再次登入：重點是點數與服務 ｜ © 2025 NFC 我的生日書</footer>
   `;
@@ -68,16 +104,64 @@ function expandBook() {
   alert("這裡可以載入完整生日書內容頁（0404 全文）。");
 }
 
-function usePoints(cost) {
+function usePoints(cost, serviceName) {
   let points = parseInt(localStorage.getItem("points") || "20");
   if(points >= cost) {
     points -= cost;
     localStorage.setItem("points", points);
     document.getElementById("points").innerText = points;
-    alert("✅ 成功扣除 " + cost + " 點，請享用服務！");
+
+    // 新增交易紀錄
+    addHistory({
+      time: new Date().toLocaleString(),
+      service: serviceName,
+      change: "- " + cost + " 點",
+      remain: points
+    });
+
+    alert("✅ 成功扣除 " + cost + " 點，請享用「" + serviceName + "」！");
+    init(); // 重新渲染，更新紀錄表
   } else {
     alert("⚠️ 點數不足！");
   }
+}
+
+function addPoints(amount, source) {
+  let points = parseInt(localStorage.getItem("points") || "20");
+  points += amount;
+  localStorage.setItem("points", points);
+
+  addHistory({
+    time: new Date().toLocaleString(),
+    service: source,
+    change: "+ " + amount + " 點",
+    remain: points
+  });
+
+  alert("✅ 已加值 " + amount + " 點！");
+  init();
+}
+
+function redeemCode() {
+  let code = document.getElementById("topupCode").value.trim();
+  if(!code) { alert("請輸入加值碼！"); return; }
+  // 簡單模擬：輸入 "HAPPYBDAY" → +5 點
+  if(code === "HAPPYBDAY") {
+    addPoints(5,"加值碼 "+code);
+    document.getElementById("topupCode").value = "";
+  } else {
+    alert("⚠️ 無效的加值碼！");
+  }
+}
+
+function addHistory(entry) {
+  let history = loadHistory();
+  history.push(entry);
+  localStorage.setItem("history", JSON.stringify(history));
+}
+
+function loadHistory() {
+  return JSON.parse(localStorage.getItem("history") || "[]");
 }
 
 function init() {
@@ -87,12 +171,22 @@ function init() {
     document.getElementById("app").innerHTML = renderFirstTime();
     localStorage.setItem("first_opened", "1");
     localStorage.setItem("points", "20"); // 初始化點數
+    localStorage.setItem("history", "[]");
   } else {
     // 之後登入
     document.getElementById("app").innerHTML = renderAfter();
     document.getElementById("points").innerText = localStorage.getItem("points");
   }
 }
+
+function resetState() {
+  localStorage.removeItem("first_opened");
+  localStorage.removeItem("points");
+  localStorage.removeItem("history");
+  alert("🔄 已重置，下次重新整理頁面會模擬『第一次開卡』");
+  location.reload();
+}
+
 init();
 </script>
 </body>
